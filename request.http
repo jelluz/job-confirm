@@ -1,0 +1,14 @@
+###
+
+POST http://localhost:8000/outage HTTP/1.1
+content-type: application/json
+
+{
+    "title": "boel onderwater",
+    "description": "ja man er vet weeer hoor\nik weet ook niet zo goed wat er nog meer \n gezegd moet worden \nblablaja man er vet weeer hoor\nik weet ook niet zo goed wat er nog meer \n gezegd moet worden \nblablaja man er vet weeer hoor\nik weet ook niet zo goed wat er nog meer \n gezegd moet worden \nblabla"
+
+}
+###
+GET http://localhost:8000/outage HTTP/1.1
+
+

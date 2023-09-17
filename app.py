@@ -1,13 +1,18 @@
 from typing import Optional
 from sqlmodel import Field, Session, SQLModel, create_engine, select
-
+from sqladmin import Admin, ModelView
 from fastapi import FastAPI
 
 
 class Outage(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     title: str = Field(index=True)
-    description: str
+    description: str = Field(max_length=2000)
+
+
+class OutageAdmin(ModelView, model=Outage):
+    column_list = [Outage.id, Outage.title, Outage.description]
+
 
 
 sqlite_file_name = "database.db"
@@ -22,6 +27,8 @@ def create_db_and_tables():
 
 
 app = FastAPI()
+admin = Admin(app, engine)
+admin.add_view(OutageAdmin)
 
 
 @app.on_event("startup")
