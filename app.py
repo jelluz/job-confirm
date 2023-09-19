@@ -1,34 +1,9 @@
-from typing import Optional
-from sqlmodel import Field, Session, SQLModel, create_engine, select
+from models import Klus, Schoonmaker, Pand
 # from sqladmin import Admin, ModelView
 from starlette_admin.contrib.sqlmodel import Admin, ModelView
-
-from starlette_admin import (
-    CollectionField,
-    ColorField,
-    EmailField,
-    ExportType,
-    IntegerField,
-    JSONField,
-    ListField,
-    StringField,
-    URLField,
-)
-from sqlalchemy import Column, Text
+from sqlmodel import  SQLModel, create_engine, Session, select
 
 from fastapi import FastAPI
-
-
-class Outage(SQLModel, table=True):
-    id: Optional[int] = Field(default=None, primary_key=True)
-    title: str = Field(index=True)
-    description: str = Field(max_length=2000)
-    content: str = Field(sa_column=Column(Text))
-
-
-# class OutageAdmin(ModelView, model=Outage):
-#     column_list = [Outage.id, Outage.title, Outage.description]
-
 
 
 sqlite_file_name = "database.db"
@@ -42,41 +17,38 @@ def create_db_and_tables():
     SQLModel.metadata.create_all(engine)
 
 
-class MyModelView(ModelView):
-    pass
-    # page_size = 5
-    # page_size_options = [5, 10, 25 - 1]
-    # export_types = [ExportType.EXCEL, ExportType.CSV]
-
-
 app = FastAPI()
 admin = Admin(engine)
-admin.add_view(MyModelView(Outage))
-# admin.add_view(OutageAdmin)
-admin.mount_to(app)
 
+class KlusView(ModelView):
+    fields: list[str] = ["titel", "beschrijving", "schoonmaker"]
+
+admin.add_view(KlusView(Klus))
+admin.add_view(ModelView(Schoonmaker))
+admin.add_view(ModelView(Pand))
+admin.mount_to(app)
 
 @app.on_event("startup")
 def on_startup():
     create_db_and_tables()
 
-
-@app.post("/outage/")
-def create_outage(outage: Outage):
+@app.post("/klussen/")
+def create_outage(klus: Klus):
     with Session(engine) as session:
-        session.add(outage)
+        session.add(klus)
         session.commit()
-        session.refresh(outage)
-        return outage
+        session.refresh(klus)
+        return klus
     
 
-@app.get("/outage/")
+@app.get("/klussen/")
 def read_heroes():
     with Session(engine) as session:
-        outage = session.exec(select(Outage)).all()
-        return outage
+        klussen = session.exec(select(Klus)).all()
+        return klussen
         
 
 @app.get("/")
 async def root():
     return {"message": "Hello World"}
+
