@@ -23,7 +23,7 @@ admin = Admin(engine)
 class KlusView(ModelView):
     fields: list[str] = ["titel", "beschrijving", "schoonmaker"]
 
-admin.add_view(KlusView(Klus))
+admin.add_view(ModelView(Klus))
 admin.add_view(ModelView(Schoonmaker))
 admin.add_view(ModelView(Pand))
 admin.mount_to(app)
