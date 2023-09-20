@@ -20,9 +20,6 @@ def create_db_and_tables():
 app = FastAPI()
 admin = Admin(engine)
 
-class KlusView(ModelView):
-    fields: list[str] = ["titel", "beschrijving", "schoonmaker"]
-
 admin.add_view(ModelView(Klus))
 admin.add_view(ModelView(Schoonmaker))
 admin.add_view(ModelView(Pand))
