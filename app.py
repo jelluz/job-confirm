@@ -25,9 +25,9 @@ admin.add_view(ModelView(Schoonmaker))
 admin.add_view(ModelView(Pand))
 admin.mount_to(app)
 
-@app.on_event("startup")
-def on_startup():
-    create_db_and_tables()
+# @app.on_event("startup")
+# def on_startup():
+#     create_db_and_tables()
 
 @app.post("/klussen/")
 def create_outage(klus: Klus):
