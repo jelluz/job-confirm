@@ -9,6 +9,7 @@ class Schoonmaker(SQLModel, table=True):
     naam: str = Field(index=True)
     email: EmailStr = Field(index=True)
     klussen: list["Klus"] | None = Relationship(back_populates="schoonmaker")
+    telefoonnummer: str|None = Field()
 
     async def __admin_repr__(self, request: Request):
         return self.naam   
