@@ -15,7 +15,7 @@ config = context.config
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-from models import Klus, Schoonmaker, Pand
+from models import Job, Contractor, Location
 
 # add your model's MetaData object here
 # for 'autogenerate' support
@@ -24,6 +24,7 @@ from models import Klus, Schoonmaker, Pand
 ###### Dan Added this section
 
 from sqlalchemy import MetaData      
+target_metadata = SQLModel.metadata             # Updated
 
 #fixes issue with manipulating contraints in sqlite
 SQLModel.metadata.naming_convention = MetaData(naming_convention={
@@ -38,7 +39,6 @@ SQLModel.metadata.naming_convention = MetaData(naming_convention={
 render_as_batch_default = False
 ###### end
 
-target_metadata = SQLModel.metadata             # Updated
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:

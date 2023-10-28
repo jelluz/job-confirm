@@ -1,4 +1,4 @@
-from models import Klus, Schoonmaker, Pand
+from models import Job, Contractor, Location
 # from sqladmin import Admin, ModelView
 from starlette_admin.contrib.sqlmodel import Admin, ModelView
 from sqlmodel import  SQLModel, create_engine, Session, select
@@ -20,29 +20,29 @@ def create_db_and_tables():
 app = FastAPI()
 admin = Admin(engine)
 
-admin.add_view(ModelView(Klus))
-admin.add_view(ModelView(Schoonmaker))
-admin.add_view(ModelView(Pand))
+admin.add_view(ModelView(Job))
+admin.add_view(ModelView(Contractor))
+admin.add_view(ModelView(Location))
 admin.mount_to(app)
 
 # @app.on_event("startup")
 # def on_startup():
 #     create_db_and_tables()
 
-@app.post("/klussen/")
-def create_outage(klus: Klus):
+@app.post("/jobsen/")
+def create_outage(job: Job):
     with Session(engine) as session:
-        session.add(klus)
+        session.add(job)
         session.commit()
-        session.refresh(klus)
-        return klus
+        session.refresh(job)
+        return job
     
 
-@app.get("/klussen/")
+@app.get("/jobsen/")
 def read_heroes():
     with Session(engine) as session:
-        klussen = session.exec(select(Klus)).all()
-        return klussen
+        jobsen = session.exec(select(Job)).all()
+        return jobsen
         
 
 @app.get("/")
