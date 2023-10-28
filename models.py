@@ -6,10 +6,10 @@ from sqlalchemy import DateTime
 
 class Contractor(SQLModel, table=True):
     id: int|None = Field(default=None, primary_key=True)
-    naam: str = Field(index=True)
+    name: str = Field(index=True)
     email: EmailStr = Field(index=True)
     jobs: list["Job"] | None = Relationship(back_populates="contractor")
-    telefoonnummer: str|None = Field()
+    telephone: str|None = Field()
 
     async def __admin_repr__(self, request: Request):
         return self.naam   
@@ -18,8 +18,8 @@ class Contractor(SQLModel, table=True):
 
 class Location(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
-    naam: str = Field(index=True)
-    adres: str = Field()
+    name: str = Field(index=True)
+    address: str = Field()
     jobs: list["Job"] | None = Relationship(back_populates="location")
 
     async def __admin_repr__(self, request: Request):
@@ -28,12 +28,12 @@ class Location(SQLModel, table=True):
 
 class Job(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
-    titel: str = Field(index=True)
-    beschrijving: str = Field(sa_column=Column(Text))
+    title: str = Field(index=True)
+    description: str = Field(sa_column=Column(Text))
     created: datetime | None = Field(
         sa_column=Column(DateTime(timezone=True), default=datetime.utcnow)
     )
-    opgelost: bool = Field(default=False)
+    solved: bool = Field(default=False)
 
     # team_id: Optional[int] = Field(default=None, foreign_key="team.id")
     contractor_id: int | None = Field(default=None, foreign_key="contractor.id")

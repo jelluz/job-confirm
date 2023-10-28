@@ -29,7 +29,7 @@ admin.mount_to(app)
 # def on_startup():
 #     create_db_and_tables()
 
-@app.post("/jobsen/")
+@app.post("/jobs/")
 def create_outage(job: Job):
     with Session(engine) as session:
         session.add(job)
@@ -38,7 +38,7 @@ def create_outage(job: Job):
         return job
     
 
-@app.get("/jobsen/")
+@app.get("/jobs/")
 def read_heroes():
     with Session(engine) as session:
         jobsen = session.exec(select(Job)).all()
