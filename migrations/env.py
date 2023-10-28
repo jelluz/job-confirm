@@ -5,6 +5,7 @@ from sqlalchemy import pool
 
 from alembic import context
 
+from sqlmodel import SQLModel
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
@@ -14,11 +15,30 @@ config = context.config
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
+from models import Job, Contractor, Location
+
 # add your model's MetaData object here
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-target_metadata = None
+###### Dan Added this section
+
+from sqlalchemy import MetaData      
+target_metadata = SQLModel.metadata             # Updated
+
+#fixes issue with manipulating contraints in sqlite
+SQLModel.metadata.naming_convention = MetaData(naming_convention={
+    "ix": 'ix_%(column_0_label)s',
+    "uq": "uq_%(table_name)s_%(column_0_name)s",
+    "ck": "ck_%(table_name)s_%(constraint_name)s",
+    "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
+    "pk": "pk_%(table_name)s"
+}).naming_convention
+
+#FIXME change to TRUE if you have problems with alter tables in sqlite
+render_as_batch_default = False
+###### end
+
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
