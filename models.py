@@ -12,7 +12,7 @@ class Contractor(SQLModel, table=True):
     telephone: str|None = Field()
 
     async def __admin_repr__(self, request: Request):
-        return self.naam   
+        return self.name   
 
 
 
@@ -23,7 +23,7 @@ class Location(SQLModel, table=True):
     jobs: list["Job"] | None = Relationship(back_populates="location")
 
     async def __admin_repr__(self, request: Request):
-        return self.naam
+        return self.name
     
 
 class Job(SQLModel, table=True):
